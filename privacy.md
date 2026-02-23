@@ -12,8 +12,8 @@ Shufflescape offers optional in-app purchases. Purchases are processed by Apple.
 
 ### Data
 We do not run third-party analytics or advertising SDKs.
-p
+
 ### Contact
-If you have questions or comments, email: contact.labyrinthlab@gmail.com
+If you have questions or comments, email: [contact.labyrinthlab@gmail.com](mailto:contact.labyrinthlab@gmail.com)
 
 _Last updated: 2026-02-22_
