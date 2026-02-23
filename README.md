@@ -15,6 +15,3 @@ After release, search for `TODO: Replace # with App Store URL` across the HTML f
 - `index.html`: marketing landing page
 - `support/index.md`: support page
 - `privacy.md`: privacy policy
-- `_layouts/`: Jekyll layouts (base, marketing, page)
-- `assets/`: CSS, images, App Store badge
-- `content/`: videos and screenshots referenced by the landing page
