@@ -3,7 +3,7 @@ title: Shufflescape Support
 ---
 
 ## Contact
-Email: contact.labyrinthlab@gmail.com
+Email: [contact.labyrinthlab@gmail.com](mailto:contact.labyrinthlab@gmail.com)
 
 ## Restore Purchases (World Unlocks)
 If you bought a World unlock and it’s not showing up:
