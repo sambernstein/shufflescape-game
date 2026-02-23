@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# GitHub Pages / Jekyll build artifacts
+_site/
+.jekyll-cache/
+.sass-cache/
+
+# Local planning doc (not part of published site)
+shufflescape_support_site_content_0c699a5a.plan.md
