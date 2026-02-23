@@ -1,10 +1,20 @@
-# shufflescape-support
-Support + privacy policy for Shufflescape iOS (GitHub Pages)
+# shufflescape-game
+Website for Shufflescape iOS (GitHub Pages)
 
-## Pages URLs (after enabling GitHub Pages)
-- Support URL: [https://sambernstein.github.io/shufflescape-support/](https://sambernstein.github.io/shufflescape-support/)
-- Privacy Policy URL: [https://sambernstein.github.io/shufflescape-support/privacy/](https://sambernstein.github.io/shufflescape-support/privacy/)
+## Pages
+| URL | Content |
+| --- | ------- |
+| [/shufflescape-game/](https://sambernstein.github.io/shufflescape-game/) | Marketing landing page |
+| [/shufflescape-game/support/](https://sambernstein.github.io/shufflescape-game/support/) | Support |
+| [/shufflescape-game/privacy/](https://sambernstein.github.io/shufflescape-game/privacy/) | Privacy Policy |
+
+## App Store Link
+After release, search for `TODO: Replace # with App Store URL` across the HTML files and update the placeholder `#` hrefs with the real App Store link.
 
 ## Files
-- `index.md`: support page
-- `privacy.md`: privacy policy (forced to `/privacy/` via permalink)
+- `index.html`: marketing landing page
+- `support/index.md`: support page
+- `privacy.md`: privacy policy
+- `_layouts/`: Jekyll layouts (base, marketing, page)
+- `assets/`: CSS, images, App Store badge
+- `content/`: videos and screenshots referenced by the landing page

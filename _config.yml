@@ -1,3 +1,4 @@
-theme: jekyll-theme-cayman
 title: Shufflescape
-description: Support and privacy policy for Shufflescape iOS
+description: A mind-bending puzzle game for iOS
+baseurl: /shufflescape-game
+url: https://sambernstein.github.io

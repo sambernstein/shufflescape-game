@@ -5,6 +5,7 @@
 _site/
 .jekyll-cache/
 .sass-cache/
+Gemfile.lock
 
 # Local planning doc (not part of published site)
 shufflescape_support_site_content_0c699a5a.plan.md
