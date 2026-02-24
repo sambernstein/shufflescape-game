@@ -110,7 +110,7 @@ img { max-width: 100%; height: auto; }
 
 /* ===== Video Section ===== */
 .video-section {
-  padding: 40px 20px 60px;
+  padding: 40px 20px 32px;
   max-width: var(--max-width);
   margin: 0 auto;
 }
@@ -159,7 +159,7 @@ img { max-width: 100%; height: auto; }
 
 /* ===== Screenshots ===== */
 .screenshots-section {
-  padding: 40px 0 60px;
+  padding: 28px 0 60px;
 }
 
 .screenshots-section h2 {
@@ -211,6 +211,15 @@ img { max-width: 100%; height: auto; }
     flex-wrap: wrap;
   }
   .screenshot-item { width: 253px; }
+}
+
+.screenshots-tagline {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 32px;
+  padding: 0 20px;
 }
 
 /* ===== Credits ===== */
