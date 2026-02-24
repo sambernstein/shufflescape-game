@@ -137,8 +137,8 @@ img { max-width: 100%; height: auto; }
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #1a1a1a;
-  flex: 1 1 300px;
-  max-width: 360px;
+  flex: 1 1 240px;
+  max-width: 280px;
 }
 
 .video-card video {
@@ -154,7 +154,7 @@ img { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 680px) {
-  .video-card { max-width: 300px; }
+  .video-card { max-width: 240px; }
 }
 
 /* ===== Screenshots ===== */
@@ -187,7 +187,7 @@ img { max-width: 100%; height: auto; }
 .screenshot-item {
   flex: 0 0 auto;
   scroll-snap-align: center;
-  width: 240px;
+  width: 276px;
 }
 
 .screenshot-item img {
@@ -210,7 +210,7 @@ img { max-width: 100%; height: auto; }
     overflow-x: visible;
     flex-wrap: wrap;
   }
-  .screenshot-item { width: 220px; }
+  .screenshot-item { width: 253px; }
 }
 
 /* ===== Credits ===== */
