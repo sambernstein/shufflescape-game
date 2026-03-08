@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
+  <canvas id="bg-canvas"></canvas>
   <nav class="site-nav">
     <div class="nav-inner">
       <a href="{{ '/' | relative_url }}" class="nav-logo">
@@ -41,5 +42,6 @@
       <p class="footer-copy">&copy; {{ 'now' | date: "%Y" }} <a href="https://sambernstein.github.io/">Sam Bernstein</a>. All rights reserved.</p>
     </div>
   </footer>
+  <script src="{{ '/assets/js/background.js' | relative_url }}"></script>
 </body>
 </html>
