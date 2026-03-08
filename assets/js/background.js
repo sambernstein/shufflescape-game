@@ -3,7 +3,7 @@
   var GAP = 2;
   var INNER = CELL - GAP;
   var RADIUS = 3;
-  var SQUARE_COVERAGE = 0.20;
+  var SQUARE_COVERAGE = 0.45;
   var WALKABLE_RATIO = 0.40;
 
   var BORDER_COLORS = [
@@ -14,13 +14,17 @@
     [255, 214, 0]
   ];
 
-  var WALKABLE_FILL = 'rgba(180, 180, 220, 0.045)';
-  var BLOCKED_FILL = 'rgba(60, 60, 80, 0.025)';
-  var BORDER_ALPHA = 0.07;
+  var WALKABLE_FILL = 'rgba(180, 180, 220, 0.12)';
+  var BLOCKED_FILL = 'rgba(60, 60, 80, 0.08)';
+  var BORDER_ALPHA = 0.18;
 
   var canvas, ctx, dpr;
-  var grid, squares;
+  var tileStates, squares;
   var cols, rows;
+  var animating = false;
+  var animSquare = null;
+  var animProgress = 0;
+  var ANIM_DURATION = 250;
 
   function init() {
     canvas = document.getElementById('bg-canvas');
@@ -31,6 +35,10 @@
     resize();
     generate();
     draw();
+    
+    setTimeout(function() {
+      canvas.classList.add('loaded');
+    }, 100);
 
     var resizeTimer;
     function onResize() {
@@ -67,11 +75,11 @@
   }
 
   function generate() {
-    grid = [];
+    tileStates = [];
     for (var r = 0; r < rows; r++) {
-      grid[r] = [];
+      tileStates[r] = [];
       for (var c = 0; c < cols; c++) {
-        grid[r][c] = -1;
+        tileStates[r][c] = null;
       }
     }
     squares = [];
@@ -88,88 +96,143 @@
       var sc = Math.floor(Math.random() * (cols - size));
       var sr = Math.floor(Math.random() * (rows - size));
 
-      if (!regionClear(sr, sc, size)) continue;
+      if (!regionInBounds(sr, sc, size)) continue;
 
       var borderCol = BORDER_COLORS[Math.floor(Math.random() * BORDER_COLORS.length)];
       var cells = [];
       for (var dr = 0; dr < size; dr++) {
         for (var dc = 0; dc < size; dc++) {
-          var walkable = Math.random() < WALKABLE_RATIO;
-          cells.push({ dr: dr, dc: dc, walkable: walkable });
-          grid[sr + dr][sc + dc] = squares.length;
+          var r = sr + dr;
+          var c = sc + dc;
+          var walkable = tileStates[r][c] !== null ? tileStates[r][c] : Math.random() < WALKABLE_RATIO;
+          cells.push({ dr: dr, dc: dc });
+          tileStates[r][c] = walkable;
         }
       }
 
       squares.push({
         r: sr, c: sc, size: size,
-        border: borderCol,
-        cells: cells
+        border: borderCol
       });
       covered += size * size;
     }
   }
 
-  function regionClear(sr, sc, size) {
-    for (var dr = -1; dr <= size; dr++) {
-      for (var dc = -1; dc <= size; dc++) {
-        var r = sr + dr;
-        var c = sc + dc;
-        if (r < 0 || r >= rows || c < 0 || c >= cols) continue;
-        if (grid[r][c] !== -1) return false;
-      }
-    }
-    return true;
+  function regionInBounds(sr, sc, size) {
+    return sr >= 0 && sr + size <= rows && sc >= 0 && sc + size <= cols;
   }
 
   function rotateSquare(idx) {
+    if (animating) return;
+    
+    animating = true;
+    animSquare = idx;
+    animProgress = 0;
+    
+    var startTime = Date.now();
+    
+    function animate() {
+      var elapsed = Date.now() - startTime;
+      animProgress = Math.min(elapsed / ANIM_DURATION, 1);
+      
+      if (animProgress < 1) {
+        draw();
+        requestAnimationFrame(animate);
+      } else {
+        applyRotation(idx);
+        animating = false;
+        animSquare = null;
+        animProgress = 0;
+        draw();
+      }
+    }
+    
+    requestAnimationFrame(animate);
+  }
+  
+  function applyRotation(idx) {
     var sq = squares[idx];
     var size = sq.size;
-
-    for (var i = 0; i < sq.cells.length; i++) {
-      grid[sq.r + sq.cells[i].dr][sq.c + sq.cells[i].dc] = -1;
+    var tempStates = [];
+    
+    for (var dr = 0; dr < size; dr++) {
+      for (var dc = 0; dc < size; dc++) {
+        tempStates.push(tileStates[sq.r + dr][sq.c + dc]);
+      }
     }
 
-    var newCells = [];
-    for (var i = 0; i < sq.cells.length; i++) {
-      var cell = sq.cells[i];
-      newCells.push({
-        dr: cell.dc,
-        dc: size - 1 - cell.dr,
-        walkable: cell.walkable
-      });
-    }
-    sq.cells = newCells;
-
-    for (var i = 0; i < sq.cells.length; i++) {
-      grid[sq.r + sq.cells[i].dr][sq.c + sq.cells[i].dc] = idx;
+    for (var dr = 0; dr < size; dr++) {
+      for (var dc = 0; dc < size; dc++) {
+        var srcIdx = dr * size + dc;
+        var newDr = dc;
+        var newDc = size - 1 - dr;
+        tileStates[sq.r + newDr][sq.c + newDc] = tempStates[srcIdx];
+      }
     }
   }
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var state = tileStates[r][c];
+        if (state !== null) {
+          var x = c * CELL + GAP / 2;
+          var y = r * CELL + GAP / 2;
+          
+          if (animating && animSquare !== null) {
+            var sq = squares[animSquare];
+            if (r >= sq.r && r < sq.r + sq.size && c >= sq.c && c < sq.c + sq.size) {
+              ctx.save();
+              var centerX = (sq.c + sq.size / 2) * CELL;
+              var centerY = (sq.r + sq.size / 2) * CELL;
+              ctx.translate(centerX, centerY);
+              ctx.rotate(animProgress * Math.PI / 2);
+              ctx.translate(-centerX, -centerY);
+            }
+          }
+          
+          ctx.fillStyle = state ? WALKABLE_FILL : BLOCKED_FILL;
+          roundRect(ctx, x, y, INNER, INNER, RADIUS);
+          ctx.fill();
+          
+          if (animating && animSquare !== null) {
+            var sq = squares[animSquare];
+            if (r >= sq.r && r < sq.r + sq.size && c >= sq.c && c < sq.c + sq.size) {
+              ctx.restore();
+            }
+          }
+        }
+      }
+    }
+
     for (var i = 0; i < squares.length; i++) {
       var sq = squares[i];
-
-      for (var j = 0; j < sq.cells.length; j++) {
-        var cell = sq.cells[j];
-        var x = (sq.c + cell.dc) * CELL + GAP / 2;
-        var y = (sq.r + cell.dr) * CELL + GAP / 2;
-        ctx.fillStyle = cell.walkable ? WALKABLE_FILL : BLOCKED_FILL;
-        roundRect(ctx, x, y, INNER, INNER, RADIUS);
-        ctx.fill();
-      }
-
       var bx = sq.c * CELL;
       var by = sq.r * CELL;
       var bw = sq.size * CELL;
       var rgb = sq.border;
+      
+      if (animating && i === animSquare) {
+        ctx.save();
+        var centerX = (sq.c + sq.size / 2) * CELL;
+        var centerY = (sq.r + sq.size / 2) * CELL;
+        ctx.translate(centerX, centerY);
+        ctx.rotate(animProgress * Math.PI / 2);
+        ctx.translate(-centerX, -centerY);
+      }
+      
       ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + BORDER_ALPHA + ')';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       roundRect(ctx, bx + 0.5, by + 0.5, bw - 1, bw - 1, 4);
       ctx.stroke();
       ctx.setLineDash([]);
+      
+      if (animating && i === animSquare) {
+        ctx.restore();
+      }
     }
   }
 
@@ -191,7 +254,15 @@
     var col = Math.floor(clientX / CELL);
     var row = Math.floor(clientY / CELL);
     if (row < 0 || row >= rows || col < 0 || col >= cols) return -1;
-    return grid[row][col];
+    
+    for (var i = squares.length - 1; i >= 0; i--) {
+      var sq = squares[i];
+      if (row >= sq.r && row < sq.r + sq.size && 
+          col >= sq.c && col < sq.c + sq.size) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   function isInteractive(el) {
@@ -206,21 +277,19 @@
   }
 
   function handlePointerUp(e) {
-    if (isInteractive(e.target)) return;
+    if (isInteractive(e.target) || animating) return;
     var idx = hitTest(e.clientX, e.clientY);
     if (idx >= 0) {
       e.preventDefault();
       rotateSquare(idx);
-      draw();
     }
   }
 
   function handleClick(e) {
-    if (isInteractive(e.target)) return;
+    if (isInteractive(e.target) || animating) return;
     var idx = hitTest(e.clientX, e.clientY);
     if (idx >= 0) {
       rotateSquare(idx);
-      draw();
     }
   }
 
