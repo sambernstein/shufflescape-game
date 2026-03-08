@@ -220,6 +220,7 @@ img { max-width: 100%; height: auto; }
   color: var(--text);
   margin-top: 32px;
   padding: 0 20px;
+  line-height: 2.2;
 }
 
 /* ===== Credits ===== */

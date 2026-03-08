@@ -6,15 +6,14 @@ permalink: /privacy/
 
 ## Privacy Policy
 
-Shufflescape does not collect, store, or sell personal information.
+_Last updated: January 21, 2026_
 
-### Purchases
-Shufflescape offers optional in-app purchases. Purchases are processed by Apple. Shufflescape does not receive your payment information.
+Shufflescape does not collect, store, or share any personal data.
 
-### Data
-We do not run third-party analytics or advertising SDKs.
+The app does not use analytics, tracking, or any third-party data collection services.
 
-### Contact
-If you have questions or comments, email: [contact.labyrinthlab@gmail.com](mailto:contact.labyrinthlab@gmail.com)
+Shufflescape offers optional in-app purchases for unlocking additional game content. All purchase transactions are handled entirely by Apple through the App Store. Purchase data is subject to [Apple's Privacy Policy](https://www.apple.com/legal/privacy/).
 
-_Last updated: 2026-02-22_
+No personal information is collected, transmitted, or stored by the app or its developer.
+
+If you have questions about this privacy policy, please contact: [contact.labyrinthlab@gmail.com](mailto:contact.labyrinthlab@gmail.com)
